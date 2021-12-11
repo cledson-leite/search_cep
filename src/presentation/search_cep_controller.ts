@@ -22,13 +22,14 @@ export default class SearchCepController implements ISearchCepController {
     try {
       if (!cep.trim()) return badRequest(new MissingCep())
 
-    const isValid = this.validator.isValid(cep)
+      const isValid = this.validator.isValid(cep)
       if (!isValid) return badRequest(new InvalidCep())
+
+
+      this.usecase.search(cep)
     } catch (err) {
       return serverError(new ServerError())
     }
-
-    this.usecase.search(cep)
   }
 
 }
