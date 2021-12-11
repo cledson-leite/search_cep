@@ -1,4 +1,5 @@
 import ISearchClient from '../datasources/i_search_client';
+import { clientResponseFake } from '../mocks/client_response_fake';
 import SearchClientStub from '../mocks/search_client_stub'
 import SearchCepRepository from './search_cep_repository';
 
@@ -28,18 +29,16 @@ describe('SearchCepRepository', () => {
     expect(getSpy).toHaveBeenCalledWith(cep)
     
   })
-  it('Should throw if datasource throws', async () => {
+  it('Should return an cepModel on success', async () => {
     //produz os dados do teste
     const { sut, datasource } = makeSut()
-    const getSpy = jest.spyOn(datasource, 'get')
-      .mockReturnValueOnce(new Promise((_, reject) => reject(new Error())))
-    const cep = 'invalidCep'
+    const cep = '12345678'
 
     //operacionar esses dados
-    const promise = sut.search(cep)
+    const result = await sut.search(cep)
     
     //verificar resultado esperado
-    await expect(promise).rejects.toThrow()
+    expect(result).toEqual(clientResponseFake)
     
   })
 })
