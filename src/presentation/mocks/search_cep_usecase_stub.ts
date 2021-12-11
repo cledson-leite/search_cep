@@ -3,7 +3,7 @@ import CepEntity from '../../domain/entities/cep_entity';
 import ISearchCep from '../../domain/usecases/search_cep';
 
 export default class SearchCepUsecaseStub implements ISearchCep {
-  search(cep: string): CepEntity {
-    return cepEntityFake
+  async search(cep: string): Promise<CepEntity> {
+    return Promise.resolve(cepEntityFake)
   }
 }

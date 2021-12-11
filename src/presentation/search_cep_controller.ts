@@ -17,7 +17,7 @@ export default class SearchCepController implements ISearchCepController {
     this.usecase = usecase
   };
   
-  search(cep: string): ClientResponse {
+  async search(cep: string): Promise<ClientResponse> {
 
     try {
       if (!cep.trim()) return badRequest(new MissingCep())
@@ -25,7 +25,7 @@ export default class SearchCepController implements ISearchCepController {
       const isValid = this.validator.isValid(cep)
       if (!isValid) return badRequest(new InvalidCep())
 
-      const data = this.usecase.search(cep)
+      const data = await this.usecase.search(cep)
 
       return ok(data)
     } catch (err) {
