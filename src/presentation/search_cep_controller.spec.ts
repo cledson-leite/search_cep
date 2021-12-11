@@ -47,4 +47,17 @@ describe('SearchCepController', () => {
     expect(result.data).toEqual(new InvalidCep())
 
   })
+  it('Should call validator with correct cep', () => {
+    //produz os dados do teste
+    const {sut, validator} = makeSut()
+    const cep: String = '12345678'
+    
+    //operacionar esses dados
+    const isValidSpy = jest.spyOn(validator, 'isValid')
+    sut.search(cep)
+
+    //verificar resultado esperado
+    expect(isValidSpy).toHaveBeenCalledWith(cep)
+
+  })
 })
