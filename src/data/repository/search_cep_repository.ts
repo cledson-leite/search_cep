@@ -8,6 +8,6 @@ export default class SearchCepRepository implements ISearchCep{
   };
   async search(cep: string): Promise<cep_entity> {
     const result = await this.datasource.get(cep)
-    return Promise.resolve(result)
+    return result
   }
 }
