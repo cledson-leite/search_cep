@@ -5,6 +5,10 @@ export const badRequest = (error: Error): ClientResponse => ({
   statusCode: 400,
   data: error
 })
+export const notFound = (error: Error): ClientResponse => ({
+  statusCode: 404,
+  data: error
+})
 
 export const serverError = (error: Error): ClientResponse => ({
   statusCode: 500,

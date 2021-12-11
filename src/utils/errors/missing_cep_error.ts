@@ -11,6 +11,13 @@ export class InvalidCep extends Error {
     this.name = 'InvalidCep'
   };
 }
+
+export class NotFoundCep extends Error {
+  constructor(){
+    super('Not found CEP');
+    this.name = 'NotFoundCep'
+  };
+}
 export class ServerError extends Error {
   constructor(){
     super('Unexpected failure. Please try later...');
