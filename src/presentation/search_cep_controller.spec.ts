@@ -1,10 +1,16 @@
-import { InvalidCep, MissingCep } from '../utils/errors/missing_cep_error'
+import { throws } from 'assert'
+import { InvalidCep, MissingCep, ServerError } from '../utils/errors/missing_cep_error'
 import SearchCepController from './search_cep_controller'
 import ICEPValidator from './validator/i_cep_validator'
 
 class CEPValidatorStub implements ICEPValidator{
   isValid(cep: String): boolean {
     return true
+  }
+}
+class CEPValidatorStubThrow implements ICEPValidator{
+  isValid(cep: String): boolean {
+    throw new Error()
   }
 }
 
@@ -55,9 +61,23 @@ describe('SearchCepController', () => {
     //operacionar esses dados
     const isValidSpy = jest.spyOn(validator, 'isValid')
     sut.search(cep)
-
+    
     //verificar resultado esperado
     expect(isValidSpy).toHaveBeenCalledWith(cep)
+    
+  })
+  it('Should return 500 if validator throws', () => {
+    //produz os dados do teste
+    const validator = new CEPValidatorStubThrow()
+    const sut = new SearchCepController(validator)
+    const cep: String = 'invalidCEP'
+
+    //operacionar esses dados
+    const result = sut.search(cep)
+
+    //verificar resultado esperado
+    expect(result.statusCode).toBe(500)
+    expect(result.data).toEqual(new ServerError())
 
   })
 })
