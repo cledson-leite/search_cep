@@ -2,17 +2,7 @@ import { throws } from 'assert'
 import { InvalidCep, MissingCep, ServerError } from '../utils/errors/missing_cep_error'
 import SearchCepController from './search_cep_controller'
 import ICEPValidator from './validator/i_cep_validator'
-
-class CEPValidatorStub implements ICEPValidator{
-  isValid(cep: String): boolean {
-    return true
-  }
-}
-class CEPValidatorStubThrow implements ICEPValidator{
-  isValid(cep: String): boolean {
-    throw new Error()
-  }
-}
+import { CEPValidatorStub, CEPValidatorStubThrow } from './validator/mocks/cep_validator_stub'
 
 interface SutTypes {
   sut: SearchCepController,
