@@ -1,6 +1,6 @@
 import ClientResponse from '../data/client_response';
-import { InvalidCep, MissingCep } from '../utils/errors/missing_cep_error';
-import { badRequest } from './helpers/requests';
+import { InvalidCep, MissingCep, ServerError } from '../utils/errors/missing_cep_error';
+import { badRequest, serverError } from './helpers/requests';
 import ISearchCepController from './i_search_cep_controller';
 import ICEPValidator from './validator/i_cep_validator';
 
@@ -13,10 +13,14 @@ export default class SearchCepController implements ISearchCepController {
   
   search(cep: String): ClientResponse {
 
-    if (!cep.trim()) return badRequest(new MissingCep())
+    try {
+      if (!cep.trim()) return badRequest(new MissingCep())
 
     const isValid = this.validator.isValid(cep)
-    if (!isValid) return badRequest(new InvalidCep())
+      if (!isValid) return badRequest(new InvalidCep())
+    } catch (err) {
+      return serverError(new ServerError())
+    }
   }
 
 }

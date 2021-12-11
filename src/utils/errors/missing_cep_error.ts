@@ -11,3 +11,9 @@ export class InvalidCep extends Error {
     this.name = 'InvalidCep'
   };
 }
+export class ServerError extends Error {
+  constructor(){
+    super('Unexpected failure. Please try later...');
+    this.name = 'ServerError'
+  };
+}
