@@ -1,3 +1,3 @@
 export default interface ICEPValidator {
-  isValid(cep: String): boolean
+  isValid(cep: string): boolean
 }
