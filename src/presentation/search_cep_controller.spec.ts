@@ -1,25 +1,29 @@
 import { throws } from 'assert'
+import ISearchCep from '../domain/usecases/search_cep'
 import { InvalidCep, MissingCep, ServerError } from '../utils/errors/missing_cep_error'
+import SearchCepUsecaseStub from './mocks/search_cep_usecase_stub'
 import SearchCepController from './search_cep_controller'
 import ICEPValidator from './validator/i_cep_validator'
 import { CEPValidatorStub } from './validator/mocks/cep_validator_stub'
 
 interface SutTypes {
   sut: SearchCepController,
-  validator: ICEPValidator
+  validator: ICEPValidator,
+  usecase: ISearchCep
 }
 
 const makeSut = (): SutTypes => {
   const validator = new CEPValidatorStub()
-  const sut = new SearchCepController(validator)
-  return {sut, validator}
+  const usecase = new SearchCepUsecaseStub()
+  const sut = new SearchCepController(validator, usecase)
+  return { sut, validator, usecase }
 }
 
 describe('SearchCepController', () => {
   it('Should return 400 if no cep is provided', () => {
     //produz os dados do teste
     const {sut} = makeSut()
-    const cep: String = ''
+    const cep: string = ''
 
     //operacionar esses dados
     const result = sut.search(cep)
@@ -32,7 +36,7 @@ describe('SearchCepController', () => {
   it('Should return 400 if an invalid cep is provided', () => {
     //produz os dados do teste
     const {sut, validator} = makeSut()
-    const cep: String = 'invalidCEP'
+    const cep: string = 'invalidCEP'
     jest.spyOn(validator, 'isValid').mockReturnValueOnce(false)
 
     //operacionar esses dados
@@ -46,7 +50,7 @@ describe('SearchCepController', () => {
   it('Should call validator with correct cep', () => {
     //produz os dados do teste
     const {sut, validator} = makeSut()
-    const cep: String = '12345678'
+    const cep: string = '12345678'
     
     //operacionar esses dados
     const isValidSpy = jest.spyOn(validator, 'isValid')
@@ -61,7 +65,7 @@ describe('SearchCepController', () => {
     const { sut, validator } = makeSut()
     jest.spyOn(validator, 'isValid').mockImplementationOnce(() => { throw new Error()})
 
-    const cep: String = 'invalidCEP'
+    const cep: string = 'invalidCEP'
 
     //operacionar esses dados
     const result = sut.search(cep)
@@ -71,4 +75,18 @@ describe('SearchCepController', () => {
     expect(result.data).toEqual(new ServerError())
 
   })
+  it('Should call usecase with correct cep', () => {
+    //produz os dados do teste
+    const { sut, usecase } = makeSut()
+    const cep: string = '12345678'
+
+    //operacionar esses dados
+    const usecaseSpy = jest.spyOn(usecase, 'search')
+    sut.search(cep)
+
+    //verificar resultado esperado
+    expect(usecaseSpy).toHaveBeenCalledWith(cep)
+
+  })
+
 })

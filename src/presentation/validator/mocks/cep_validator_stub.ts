@@ -1,7 +1,7 @@
 import ICEPValidator from '../i_cep_validator';
 
 export class CEPValidatorStub implements ICEPValidator {
-  isValid(cep: String): boolean {
+  isValid(cep: string): boolean {
     return true
   }
 }
