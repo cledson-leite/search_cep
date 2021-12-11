@@ -4,3 +4,10 @@ export class MissingCep extends Error {
     this.name = 'MissingCep'
   };
 }
+
+export class InvalidCep extends Error {
+  constructor(){
+    super('Invalid CEP');
+    this.name = 'InvalidCep'
+  };
+}
