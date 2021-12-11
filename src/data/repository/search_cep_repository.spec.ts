@@ -28,4 +28,18 @@ describe('SearchCepRepository', () => {
     expect(getSpy).toHaveBeenCalledWith(cep)
     
   })
+  it('Should throw if datasource throws', async () => {
+    //produz os dados do teste
+    const { sut, datasource } = makeSut()
+    const getSpy = jest.spyOn(datasource, 'get')
+      .mockReturnValueOnce(new Promise((_, reject) => reject(new Error())))
+    const cep = 'invalidCep'
+
+    //operacionar esses dados
+    const promise = sut.search(cep)
+    
+    //verificar resultado esperado
+    await expect(promise).rejects.toThrow()
+    
+  })
 })
