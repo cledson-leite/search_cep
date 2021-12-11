@@ -1,4 +1,5 @@
 import { throws } from 'assert'
+import { cepEntityFake } from '../data/mocks/cep_model_fake'
 import ISearchCep from '../domain/usecases/search_cep'
 import { InvalidCep, MissingCep, ServerError } from '../utils/errors/missing_cep_error'
 import SearchCepUsecaseStub from './mocks/search_cep_usecase_stub'
@@ -101,6 +102,19 @@ describe('SearchCepController', () => {
     //verificar resultado esperado
     expect(result.statusCode).toBe(500)
     expect(result.data).toEqual(new ServerError())
+
+  })
+  it('Should return 200 if cep is provided', () => {
+    //produz os dados do teste
+    const { sut } = makeSut()
+    const cep: string = '12345678'
+
+    //operacionar esses dados
+    const result = sut.search(cep)
+
+    //verificar resultado esperado
+    expect(result.statusCode).toBe(200)
+    expect(result.data).toEqual(cepEntityFake)
 
   })
 
