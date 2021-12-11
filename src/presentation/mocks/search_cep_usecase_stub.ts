@@ -1,4 +1,4 @@
-import { cepEntityFake } from '../../data/mocks/cep_model_fake';
+import { cepEntityFake } from '../../domain/mocks/cep_model_fake';
 import CepEntity from '../../domain/entities/cep_entity';
 import ISearchCep from '../../domain/usecases/search_cep';
 

@@ -1,5 +1,5 @@
 import { throws } from 'assert'
-import { cepEntityFake } from '../data/mocks/cep_model_fake'
+import { cepEntityFake } from '../domain/mocks/cep_model_fake'
 import ISearchCep from '../domain/usecases/search_cep'
 import { InvalidCep, MissingCep, ServerError } from '../utils/errors/missing_cep_error'
 import SearchCepUsecaseStub from './mocks/search_cep_usecase_stub'
