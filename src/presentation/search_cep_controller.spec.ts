@@ -1,7 +1,8 @@
 import { throws } from 'assert'
+import CepEntity from '../domain/entities/cep_entity'
 import { cepEntityFake } from '../domain/mocks/cep_model_fake'
 import ISearchCep from '../domain/usecases/search_cep'
-import { InvalidCep, MissingCep, ServerError } from '../utils/errors/missing_cep_error'
+import { InvalidCep, MissingCep, NotFoundCep, ServerError } from '../utils/errors/missing_cep_error'
 import SearchCepUsecaseStub from './mocks/search_cep_usecase_stub'
 import SearchCepController from './search_cep_controller'
 import ICEPValidator from './validator/i_cep_validator'
@@ -48,6 +49,7 @@ describe('SearchCepController', () => {
     expect(result.data).toEqual(new InvalidCep())
 
   })
+  
   it('Should call validator with correct cep', async () => {
     //produz os dados do teste
     const {sut, validator} = makeSut()
@@ -102,6 +104,22 @@ describe('SearchCepController', () => {
     //verificar resultado esperado
     expect(result.statusCode).toBe(500)
     expect(result.data).toEqual(new ServerError())
+
+  })
+  it('Should return 404 if usecase return CepEntity empty', async () => {
+    //produz os dados do teste
+    const { sut, usecase } = makeSut()
+    jest.spyOn(usecase, 'search')
+      .mockResolvedValueOnce(new CepEntity(undefined, undefined, undefined, undefined, undefined, undefined))
+
+    const cep: string = 'notFoundCEP'
+
+    //operacionar esses dados
+    const result = await sut.search(cep)
+
+    //verificar resultado esperado
+    expect(result.statusCode).toBe(404)
+    expect(result.data).toEqual(new NotFoundCep())
 
   })
   it('Should return 200 if cep is provided', async () => {
