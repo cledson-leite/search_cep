@@ -88,5 +88,20 @@ describe('SearchCepController', () => {
     expect(usecaseSpy).toHaveBeenCalledWith(cep)
 
   })
+  it('Should return 500 if usecase throws', () => {
+    //produz os dados do teste
+    const { sut, usecase } = makeSut()
+    jest.spyOn(usecase, 'search').mockImplementationOnce(() => { throw new Error() })
+
+    const cep: string = 'invalidCEP'
+
+    //operacionar esses dados
+    const result = sut.search(cep)
+
+    //verificar resultado esperado
+    expect(result.statusCode).toBe(500)
+    expect(result.data).toEqual(new ServerError())
+
+  })
 
 })
