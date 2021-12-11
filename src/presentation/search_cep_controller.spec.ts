@@ -2,7 +2,7 @@ import { throws } from 'assert'
 import { InvalidCep, MissingCep, ServerError } from '../utils/errors/missing_cep_error'
 import SearchCepController from './search_cep_controller'
 import ICEPValidator from './validator/i_cep_validator'
-import { CEPValidatorStub, CEPValidatorStubThrow } from './validator/mocks/cep_validator_stub'
+import { CEPValidatorStub } from './validator/mocks/cep_validator_stub'
 
 interface SutTypes {
   sut: SearchCepController,
@@ -58,8 +58,9 @@ describe('SearchCepController', () => {
   })
   it('Should return 500 if validator throws', () => {
     //produz os dados do teste
-    const validator = new CEPValidatorStubThrow()
-    const sut = new SearchCepController(validator)
+    const { sut, validator } = makeSut()
+    jest.spyOn(validator, 'isValid').mockImplementationOnce(() => { throw new Error()})
+
     const cep: String = 'invalidCEP'
 
     //operacionar esses dados

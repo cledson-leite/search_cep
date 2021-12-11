@@ -5,9 +5,3 @@ export class CEPValidatorStub implements ICEPValidator {
     return true
   }
 }
-
-export class CEPValidatorStubThrow implements ICEPValidator {
-  isValid(cep: String): boolean {
-    throw new Error()
-  }
-}
