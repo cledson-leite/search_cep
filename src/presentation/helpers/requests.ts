@@ -1,4 +1,4 @@
-import ClientResponse from '../../data/client_response';
+import ClientResponse from '../../data/repository/client_response';
 import CepEntity from '../../domain/entities/cep_entity';
 
 export const badRequest = (error: Error): ClientResponse => ({
